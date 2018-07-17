@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>se.jiderhamn.fifty-shades-of-serverless</groupId>
+  <artifactId>serverless-parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Fifty shades of serverless</name>
+
+  <scm>
+    <connection>scm:git:git@github.com:mjiderhamn/fifty-shades-of-serverless.git</connection>
+    <developerConnection>scm:git:git@github.com:mjiderhamn/fifty-shades-of-serverless.git</developerConnection>
+    <url>https://github.com/mjiderhamn/fifty-shades-of-serverless.git</url>
+  </scm>
+  
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
+  <modules>
+    <module>serverless-common</module>
+    <module>serverless-azure</module>
+    <module>serverless-aws</module>
+  </modules>
+ 
+ </project>
