@@ -14,8 +14,8 @@
     <azure.functions.maven.plugin.version>1.0.0-beta-2</azure.functions.maven.plugin.version>
     <azure.functions.java.library.version>1.0.0-beta-4</azure.functions.java.library.version>
     <!-- TODO -->
-    <functionAppName>serverless-azure-20180716135442349</functionAppName>
-    <functionAppRegion>westeurope</functionAppRegion>
+    <functionAppName>50shadesofserverless</functionAppName>
+    <functionAppRegion>northeurope</functionAppRegion>
     <stagingDirectory>${project.build.directory}/azure-functions/${functionAppName}</stagingDirectory>
     <functionResourceGroup>java-functions-group</functionResourceGroup>
   </properties>
@@ -31,6 +31,11 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>se.jiderhamn.fifty-shades-of-serverless</groupId>
+      <artifactId>serverless-common</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.microsoft.azure.functions</groupId>
       <artifactId>azure-functions-java-library</artifactId>

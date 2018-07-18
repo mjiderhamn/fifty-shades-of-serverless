@@ -1,41 +1,42 @@
 package se.jiderhamn.serverless.azure;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Optional;
 
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpRequestMessage;
-import com.microsoft.azure.functions.HttpResponseMessage;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
+import com.microsoft.azure.functions.annotation.BindingName;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
+import se.jiderhamn.serverless.TransformationService;
 
 /**
  * @author Mattias Jiderhamn
  */
 public class AzureFunction {
 
-  /**
-   * TODO
-   * This function listens at endpoint "/api/hello". Two ways to invoke it using "curl" command in bash:
-   * 1. curl -d "HTTP Body" {your host}/api/hello
-   * 2. curl {your host}/api/hello?name=HTTP%20Query
-   */
+  /** Ping method to allow verifying Function App is up and running */
   @SuppressWarnings("unused")
-  @FunctionName("hello")
-  public HttpResponseMessage<String> hello(
+  @FunctionName("ping")
+  public String ping(
       @HttpTrigger(name = "req", methods = {"get", "post"}, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
+      @BindingName("name") String name,
       final ExecutionContext context) {
-    // TODO
     context.getLogger().info("Java HTTP trigger processed a request.");
 
-    // Parse query parameter
-    String query = request.getQueryParameters().get("name");
-    String name = request.getBody().orElse(query);
+    return "Pong" + ((name == null) ? "" : " - Name: " + name);
+  }
 
-    if (name == null) {
-      return request.createResponse(400, "Please pass a name on the query string or in the request body");
-    } else {
-      return request.createResponse(200, "Hello, " + name);
-    }
+  /** Transform XML document from one format to another */
+  @FunctionName("transform")
+  public byte[] transform(
+      @HttpTrigger(name = "req", methods = {"get", "post"}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
+      final ExecutionContext context) {
+    context.getLogger().info("Transforming input");
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TransformationService.transform(new ByteArrayInputStream(input), baos);
+    return baos.toByteArray();
   }
 }
