@@ -21,7 +21,7 @@ resource "azurerm_app_service_plan" "fiftyshadesofserverless" {
 
   sku {
     tier = "Dynamic"
-    size = "B1"
+    size = "Y1" # Consumption plan for Function App
   }
 }
 
