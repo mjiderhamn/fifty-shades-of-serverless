@@ -18,6 +18,10 @@ public class AzureFunction {
   
   public static final String RESULT_QUEUE = "50shades-result";
 
+  public static final String AZURE_WEB_JOBS_STORAGE = "AzureWebJobsStorage";
+
+  public static final String BLOB_INPUT_PATH = "input";
+
   /** Ping method to allow verifying Function App is up and running */
   @FunctionName("ping")
   public String ping(
@@ -42,13 +46,26 @@ public class AzureFunction {
 
   /** Transform XML document from one format to another */
   @FunctionName("transformStorageQueue")
-  @QueueOutput(name = "queueResult", queueName = RESULT_QUEUE, connection = "AzureWebJobsStorage")
+  @QueueOutput(name = "queueResult", queueName = RESULT_QUEUE, connection = AZURE_WEB_JOBS_STORAGE)
   public byte[] transformQueue(
-      @QueueTrigger(name = "input", dataType = "binary", queueName = AzureFunction.INPUT_QUEUE, connection = "AzureWebJobsStorage") byte[] input,
+      @QueueTrigger(name = "input", dataType = "binary", queueName = AzureFunction.INPUT_QUEUE, connection = AZURE_WEB_JOBS_STORAGE) byte[] input,
       final ExecutionContext context) {
     context.getLogger().info("Transforming storage queue input");
     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     TransformationService.transform(new ByteArrayInputStream(input), baos);
+    return baos.toByteArray();
+  }
+
+  /** See https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob#trigger---blob-name-patterns */
+  @FunctionName("transformBlob")
+  @BlobOutput(name = "blobResult", path = "result/{name}", connection = AZURE_WEB_JOBS_STORAGE)
+  public byte[] transformBlob(
+      @BlobTrigger(name = "content", dataType = "binary", path = BLOB_INPUT_PATH + "/{name}", connection = AZURE_WEB_JOBS_STORAGE) byte[] content,
+      // @BindingName("name") String name,
+      final ExecutionContext context) {
+    context.getLogger().info("Transforming blob input");
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TransformationService.transform(new ByteArrayInputStream(content), baos);
     return baos.toByteArray();
   }
 }
