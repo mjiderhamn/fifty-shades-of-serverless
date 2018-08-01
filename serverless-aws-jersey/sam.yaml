@@ -2,6 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS Serverless Jersey API - se.jiderhamn.fifty-shades-of-serverless::serverless-aws-jersey
 Resources:
+  InBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: fifty-shades-transform # Must be globally unique
   ServerlessAwsJerseyFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -17,6 +21,23 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
+  ProcessS3ObjectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: se.jiderhamn.serverless.aws.S3Handler::handleRequest
+      Runtime: java8
+      CodeUri: target/serverless-aws-jersey-1.0.0-SNAPSHOT.jar
+      MemorySize: 512
+      Timeout: 15
+      Policies:
+        - AmazonS3FullAccess
+      Events:
+        ProcessS3ObjectEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref InBucket 
+            Events: s3:ObjectCreated:*
+
 
 Outputs:
   ServerlessAwsJerseyApi:
