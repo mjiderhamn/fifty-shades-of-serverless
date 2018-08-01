@@ -1,0 +1,1 @@
+curl --header "Content-Type: application/octet-stream" --data-binary @input.xml http://localhost:7071/api/transform

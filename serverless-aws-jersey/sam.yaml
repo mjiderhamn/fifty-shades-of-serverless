@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Jersey API - se.jiderhamn.fifty-shades-of-serverless::serverless-aws-jersey
+Resources:
+  ServerlessAwsJerseyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: se.jiderhamn.serverless.aws.jersey.StreamLambdaHandler::handleRequest
+      Runtime: java8
+      CodeUri: target/serverless-aws-jersey-1.0.0-SNAPSHOT.jar
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 15
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  ServerlessAwsJerseyApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Export:
+      Name: ServerlessAwsJerseyApi

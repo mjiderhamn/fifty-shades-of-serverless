@@ -1,0 +1,1 @@
+sam deploy --template-file output.yaml --stack-name fifty-shades-of-serverless --capabilities CAPABILITY_IAM
