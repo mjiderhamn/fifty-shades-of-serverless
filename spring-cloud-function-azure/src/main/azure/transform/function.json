@@ -1,0 +1,16 @@
+{
+  "scriptFile": "..\\spring-cloud-function-azure-1.0.0-SNAPSHOT-azure.jar",
+  "entryPoint": "se.jiderhamn.serverless.spring.azure.TransformHandler.transform",
+  "bindings": [ {
+    "type": "httpTrigger",
+    "name": "req",
+    "direction": "in",
+    "authLevel": "anonymous",
+    "methods": ["get", "post"]
+  }, {
+      "type": "http",
+      "name": "$return",
+      "direction": "out"
+    } ],
+  "disabled": false
+}
