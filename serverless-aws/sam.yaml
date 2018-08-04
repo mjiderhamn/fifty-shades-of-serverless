@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Fifty shades of serverless application
+    
+Resources:
+  UploadFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Handler: se.jiderhamn.serverless.aws.AwsHandler::handler
+      Runtime: java8
+      CodeUri: target/serverless-aws-1.0.0-SNAPSHOT.jar
+      Events:
+        Ping:
+          Type: Api
+          Properties:
+            Path: /transform/{proxy+}
+            Method: any
+
+  PingFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: target/serverless-aws-1.0.0-SNAPSHOT.jar
+      Handler: se.jiderhamn.serverless.aws.PingHandler::handleRequest
+      Runtime: java8
+      Events:
+        Ping:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /ping/{proxy+}
+            Method: any
+
+#Outputs:
+#
+#    FiftyShadesApi:
+#      Description: "API Gateway endpoint URL for Prod stage for Ping function"
+#      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping/"
+#
+#    FiftyShadesFunction:
+#      Description: "Ping Lambda Function ARN"
+#      Value: !GetAtt FiftyShadesFunction.Arn
+#
+#    FiftyShadesFunctionIamRole:
+#      Description: "Implicit IAM Role created for Ping function"
+#      Value: !GetAtt FiftyShadesFunctionRole.Arn
