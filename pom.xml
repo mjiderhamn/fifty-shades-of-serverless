@@ -24,6 +24,8 @@
     <module>serverless-azure</module>
     <module>serverless-aws</module>
     <module>serverless-aws-jersey</module>
+    <module>spring-cloud-function</module>
+    <module>spring-cloud-function-azure</module>
   </modules>
  
  </project>
