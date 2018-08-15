@@ -1,1 +1,3 @@
 azure.properties
+obj/
+.terraform/
