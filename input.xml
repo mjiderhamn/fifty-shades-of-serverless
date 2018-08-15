@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<order>
+  <head>
+    <customer>
+      <id>123</id>
+    </customer>
+  </head>
+  <lines>
+    <line>
+      <article>
+        <id>FOO</id>
+      </article>
+      <quantity>3</quantity>
+    </line>
+    <line>
+      <article>
+        <id>BAR</id>
+      </article>
+      <quantity>1</quantity>
+    </line>
+  </lines>
+</order>
