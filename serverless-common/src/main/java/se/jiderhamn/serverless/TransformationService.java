@@ -1,13 +1,19 @@
 package se.jiderhamn.serverless;
 
+import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 
 /**
  * Service class containing the actual work to be performed by the serverless functions
@@ -49,6 +55,13 @@ public class TransformationService {
     catch (TransformerException e) {
       throw new RuntimeException(e);
     }
+  }
+  
+  /** Transform XML document from one format to another */
+  public static byte[] transform(byte[] input) {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    transform(new ByteArrayInputStream(input), baos);
+    return baos.toByteArray();
   }
   
 }

@@ -1,13 +1,18 @@
 package se.jiderhamn.serverless.azure;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.Optional;
-
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpRequestMessage;
-import com.microsoft.azure.functions.annotation.*;
+import com.microsoft.azure.functions.annotation.AuthorizationLevel;
+import com.microsoft.azure.functions.annotation.BindingName;
+import com.microsoft.azure.functions.annotation.BlobOutput;
+import com.microsoft.azure.functions.annotation.BlobTrigger;
+import com.microsoft.azure.functions.annotation.FunctionName;
+import com.microsoft.azure.functions.annotation.HttpTrigger;
+import com.microsoft.azure.functions.annotation.QueueOutput;
+import com.microsoft.azure.functions.annotation.QueueTrigger;
 import se.jiderhamn.serverless.TransformationService;
+
+import java.util.Optional;
 
 /**
  * @author Mattias Jiderhamn
@@ -36,12 +41,10 @@ public class AzureFunction {
   /** Transform XML document from one format to another */
   @FunctionName("transform")
   public byte[] transform(
-      @HttpTrigger(name = "req", methods = {"get", "post"}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
+      @HttpTrigger(name = "req", methods = {"post"}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
       final ExecutionContext context) {
     context.getLogger().info("Transforming HTTP input");
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    TransformationService.transform(new ByteArrayInputStream(input), baos);
-    return baos.toByteArray();
+    return TransformationService.transform(input);
   }
 
   /** Transform XML document from one format to another */
@@ -51,9 +54,7 @@ public class AzureFunction {
       @QueueTrigger(name = "input", dataType = "binary", queueName = AzureFunction.INPUT_QUEUE, connection = AZURE_WEB_JOBS_STORAGE) byte[] input,
       final ExecutionContext context) {
     context.getLogger().info("Transforming storage queue input");
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    TransformationService.transform(new ByteArrayInputStream(input), baos);
-    return baos.toByteArray();
+    return TransformationService.transform(input);
   }
 
   /** See https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob#trigger---blob-name-patterns */
@@ -64,8 +65,6 @@ public class AzureFunction {
       // @BindingName("name") String name,
       final ExecutionContext context) {
     context.getLogger().info("Transforming blob input");
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    TransformationService.transform(new ByteArrayInputStream(content), baos);
-    return baos.toByteArray();
+    return TransformationService.transform(content);
   }
 }

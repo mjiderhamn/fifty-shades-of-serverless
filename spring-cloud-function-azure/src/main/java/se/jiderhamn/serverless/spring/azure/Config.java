@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import se.jiderhamn.serverless.TransformationService;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.function.Function;
 
 /**
@@ -21,10 +19,6 @@ public class Config {
 	/** TODO Replace with POF */
 	@Bean
 	public Function<byte[], byte[]> uppercase() {
-		return input -> {
-			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    TransformationService.transform(new ByteArrayInputStream(input), baos); // TODO Implement in service
-  	  return baos.toByteArray();	   
-		};
+		return TransformationService::transform;
 	}
 }

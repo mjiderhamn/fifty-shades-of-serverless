@@ -8,8 +8,6 @@ import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 import se.jiderhamn.serverless.TransformationService;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Optional;
 
 /**
@@ -34,9 +32,7 @@ public class AzureFunction {
       @HttpTrigger(name = "req", methods = {"post"}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
       final ExecutionContext context) {
     context.getLogger().info("Transforming HTTP input");
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    TransformationService.transform(new ByteArrayInputStream(input), baos);
-    return baos.toByteArray();
+    return TransformationService.transform(input);
   }
   
 }

@@ -7,9 +7,6 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import se.jiderhamn.serverless.TransformationService;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
 /**
  * @author Mattias Jiderhamn
  */
@@ -23,12 +20,11 @@ public class QueueHandler implements RequestHandler<SQSEvent, Void> {
     context.getLogger().log("About to process " + event.getRecords().size() + " record(s)");
     final AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient(); // NOTE! Can take longer than default timeout!
     for(SQSEvent.SQSMessage msg : event.getRecords()) {
-      final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      TransformationService.transform(new ByteArrayInputStream(msg.getBody().getBytes()), baos);
+      final byte[] output = TransformationService.transform(msg.getBody().getBytes());
       
       // Send back result
       // context.getLogger().log("Sending " + baos.toByteArray().length + " bytes to " + OUTPUT_QUEUE);
-      sqs.sendMessage(OUTPUT_QUEUE, new String(baos.toByteArray()));
+      sqs.sendMessage(OUTPUT_QUEUE, new String(output));
     }
     return null;
   }
