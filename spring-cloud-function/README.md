@@ -7,3 +7,9 @@ mvn spring-boot:run
 ```
 curl -H "Content-Type: text/plain" localhost:8080 -d World
 ```
+
+### Transform
+Locally:
+```
+curl -s --header "Content-Type: application/octet-stream" --data-binary @input.xml http://localhost:8080
+```
