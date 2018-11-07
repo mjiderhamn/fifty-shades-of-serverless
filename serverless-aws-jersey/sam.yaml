@@ -17,53 +17,6 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
-  ProcessS3ObjectFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: se.jiderhamn.serverless.aws.S3Handler::handleRequest
-      Runtime: java8
-      CodeUri: target/serverless-aws-jersey-1.0.0-SNAPSHOT.jar
-      MemorySize: 512
-      Timeout: 15
-      Policies:
-        - AmazonS3FullAccess
-      Events:
-        ProcessS3ObjectEvent:
-          Type: S3
-          Properties:
-            Bucket: !Ref InBucket 
-            Events: s3:ObjectCreated:*
-  InBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: fifty-shades-transform # Must be globally unique
-
-  TransformSQSQueueFunction:
-    Type: AWS::Serverless::Function
-    Properties:      
-      Handler: se.jiderhamn.serverless.aws.QueueHandler::handleRequest
-      Runtime: java8
-      CodeUri: target/serverless-aws-jersey-1.0.0-SNAPSHOT.jar
-      MemorySize: 512
-      Timeout: 15
-      Policies:
-        - AmazonSQSFullAccess 
-      Events:
-        MySQSEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt InputSqsQueue.Arn
-            BatchSize: 10
-
-  InputSqsQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: 50shades-input
-  ResultSqsQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: 50shades-result
-
 Outputs:
   ServerlessAwsJerseyApi:
     Description: URL for application
