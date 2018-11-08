@@ -1,6 +1,7 @@
 package se.jiderhamn.serverless.azure;
 
 import com.microsoft.azure.functions.ExecutionContext;
+import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.BindingName;
@@ -18,7 +19,7 @@ public class AzureFunction {
   /** Ping method to allow verifying Function App is up and running */
   @FunctionName("ping")
   public String ping(
-      @HttpTrigger(name = "req", methods = {"get", "post"}, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
+      @HttpTrigger(name = "req", methods = {HttpMethod.GET, HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
       @BindingName("name") String name,
       final ExecutionContext context) {
     context.getLogger().info("Java HTTP trigger processed a request.");
@@ -29,7 +30,7 @@ public class AzureFunction {
   /** Transform XML document from one format to another */
   @FunctionName("transform1")
   public byte[] transform(
-      @HttpTrigger(name = "req", methods = {"post"}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
+      @HttpTrigger(name = "req", methods = {HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
       final ExecutionContext context) {
     context.getLogger().info("Transforming HTTP input");
     return TransformationService.transform(input);
