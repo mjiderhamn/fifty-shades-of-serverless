@@ -12,13 +12,7 @@ import java.util.function.Function;
  */
 @SpringBootApplication
 public class Config {
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		SpringApplication.run(Config.class, args);
-	}
-
-	/** TODO Replace with POF */
-	@Bean
-	public Function<byte[], byte[]> uppercase() {
-		return TransformationService::transform;
 	}
 }

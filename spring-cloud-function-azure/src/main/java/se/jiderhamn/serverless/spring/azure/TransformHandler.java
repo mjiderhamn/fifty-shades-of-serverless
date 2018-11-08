@@ -10,10 +10,13 @@ import org.springframework.cloud.function.adapter.azure.AzureSpringBootRequestHa
 /**
  * @author Mattias Jiderhamn
  */
+@SuppressWarnings("unused")
 public class TransformHandler extends AzureSpringBootRequestHandler<byte[], byte[]> {
 
 	@FunctionName("transform")
-	public byte[] transform(@HttpTrigger(name="req", methods={HttpMethod.GET, HttpMethod.POST}, authLevel=AuthorizationLevel.ANONYMOUS) byte[] input, ExecutionContext context) {
+	public byte[] transform(@HttpTrigger(name="req", methods={HttpMethod.GET, HttpMethod.POST}, authLevel=AuthorizationLevel.ANONYMOUS)
+                          byte[] input,
+                          ExecutionContext context) {
 		return handleRequest(input, context);
 	}
 
