@@ -64,4 +64,12 @@ public class TransformationService {
     return baos.toByteArray();
   }
   
+  /** Workaround for https://github.com/Azure/azure-functions-java-worker/issues/239 */
+  public static byte[] transform(Byte[] input) {
+    byte[] primitive = new byte[input.length];
+    for(int i = 0; i < input.length; i++)
+      primitive[i] = input[i];
+    return transform(primitive);
+  }
+
 }

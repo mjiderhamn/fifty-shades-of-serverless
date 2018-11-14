@@ -2,19 +2,16 @@ package se.jiderhamn.serverless.azure;
 
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpRequestMessage;
-import com.microsoft.azure.functions.annotation.AuthorizationLevel;
-import com.microsoft.azure.functions.annotation.BindingName;
-import com.microsoft.azure.functions.annotation.BlobOutput;
-import com.microsoft.azure.functions.annotation.BlobTrigger;
-import com.microsoft.azure.functions.annotation.FunctionName;
-import com.microsoft.azure.functions.annotation.HttpTrigger;
-import com.microsoft.azure.functions.annotation.QueueOutput;
-import com.microsoft.azure.functions.annotation.QueueTrigger;
+import com.microsoft.azure.functions.annotation.*;
 import se.jiderhamn.serverless.TransformationService;
 
 import java.util.Optional;
 
+import static com.microsoft.azure.functions.HttpMethod.GET;
+import static com.microsoft.azure.functions.HttpMethod.POST;
+
 /**
+ * {@code Byte[]} is used instead of {@code byte[]} as a workaround for https://github.com/Azure/azure-functions-java-worker/issues/239
  * @author Mattias Jiderhamn
  */
 public class AzureFunction {
@@ -30,7 +27,7 @@ public class AzureFunction {
   /** Ping method to allow verifying Function App is up and running */
   @FunctionName("ping")
   public String ping(
-      @HttpTrigger(name = "req", methods = {"get", "post"}, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
+      @HttpTrigger(name = "req", methods = {GET, POST}, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
       @BindingName("name") String name,
       final ExecutionContext context) {
     context.getLogger().info("Java HTTP trigger processed a request.");
@@ -41,17 +38,17 @@ public class AzureFunction {
   /** Transform XML document from one format to another */
   @FunctionName("transform")
   public byte[] transform(
-      @HttpTrigger(name = "req", methods = {"post"}, authLevel = AuthorizationLevel.ANONYMOUS) byte[] input,
+      @HttpTrigger(name = "req", methods = {POST}, authLevel = AuthorizationLevel.ANONYMOUS, dataType = "binary") Byte[] request,
       final ExecutionContext context) {
     context.getLogger().info("Transforming HTTP input");
-    return TransformationService.transform(input);
+    return TransformationService.transform(request);
   }
 
   /** Transform XML document from one format to another */
   @FunctionName("transformStorageQueue")
   @QueueOutput(name = "queueResult", queueName = RESULT_QUEUE, connection = AZURE_WEB_JOBS_STORAGE)
   public byte[] transformQueue(
-      @QueueTrigger(name = "input", dataType = "binary", queueName = AzureFunction.INPUT_QUEUE, connection = AZURE_WEB_JOBS_STORAGE) byte[] input,
+      @QueueTrigger(name = "input", dataType = "binary", queueName = AzureFunction.INPUT_QUEUE, connection = AZURE_WEB_JOBS_STORAGE) Byte[] input,
       final ExecutionContext context) {
     context.getLogger().info("Transforming storage queue input");
     return TransformationService.transform(input);
@@ -61,7 +58,7 @@ public class AzureFunction {
   @FunctionName("transformBlob")
   @BlobOutput(name = "blobResult", path = "result/{name}", connection = AZURE_WEB_JOBS_STORAGE)
   public byte[] transformBlob(
-      @BlobTrigger(name = "content", dataType = "binary", path = BLOB_INPUT_PATH + "/{name}", connection = AZURE_WEB_JOBS_STORAGE) byte[] content,
+      @BlobTrigger(name = "content", dataType = "binary", path = BLOB_INPUT_PATH + "/{name}", connection = AZURE_WEB_JOBS_STORAGE) Byte[] content,
       // @BindingName("name") String name,
       final ExecutionContext context) {
     context.getLogger().info("Transforming blob input");

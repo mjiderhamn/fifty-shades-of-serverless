@@ -11,8 +11,8 @@
   <name>Azure Functions demo</name>
 
   <properties>
-    <azure.functions.maven.plugin.version>1.0.0-beta-2</azure.functions.maven.plugin.version>
-    <azure.functions.java.library.version>1.0.0-beta-4</azure.functions.java.library.version>
+    <azure.functions.maven.plugin.version>1.2.0</azure.functions.maven.plugin.version>
+    <azure.functions.java.library.version>1.2.0</azure.functions.java.library.version>
     <!-- NOTE! You'll need to update this to a unique Function App name -->
     <functionAppName>50shadesofserverless</functionAppName>
     <functionAppRegion>northeurope</functionAppRegion>
