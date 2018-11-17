@@ -15,9 +15,9 @@ import static com.microsoft.azure.functions.HttpMethod.POST;
  * @author Mattias Jiderhamn
  */
 public class AzureFunction {
-  
+
   public static final String INPUT_QUEUE = "50shades-in";
-  
+
   public static final String RESULT_QUEUE = "50shades-result";
 
   public static final String AZURE_WEB_JOBS_STORAGE = "AzureWebJobsStorage";

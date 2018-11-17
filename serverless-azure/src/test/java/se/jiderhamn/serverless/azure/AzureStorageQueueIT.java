@@ -15,8 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import static se.jiderhamn.serverless.azure.AzureStorageTestUtils.getInputFile;
-
 /**
  * @author Mattias Jiderhamn
  */

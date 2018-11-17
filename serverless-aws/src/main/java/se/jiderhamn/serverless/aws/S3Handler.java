@@ -11,8 +11,6 @@ import com.amazonaws.services.s3.model.S3Object;
 import se.jiderhamn.serverless.TransformationService;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -24,26 +22,16 @@ public class S3Handler implements RequestHandler<S3Event, String> {
   @Override
   public String handleRequest(S3Event s3event, Context context) {
     for(S3EventNotification.S3EventNotificationRecord record : s3event.getRecords()) {
-
       final String inBucket = record.getS3().getBucket().getName();
-      final String key;
-      try {
-        key = URLDecoder.decode(record.getS3().getObject().getKey(), "UTF-8");
-      }
-      catch (UnsupportedEncodingException e) {
-        throw new RuntimeException(e);
-      }
+      final String key = decodeKey(record);
 
       // Download source
       final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
       final S3Object s3Object = s3Client.getObject(inBucket, key);
-      final InputStream is = s3Object.getObjectContent();
-
-      final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      TransformationService.transform(is, baos);
+      final byte[] output = TransformationService.transform(s3Object.getObjectContent());
 
       ObjectMetadata meta = new ObjectMetadata();
-      meta.setContentLength(baos.size());
+      meta.setContentLength(output.length);
 
       // Uploading to S3 destination bucket
       final String outBucket = inBucket + ".out";
@@ -51,12 +39,21 @@ public class S3Handler implements RequestHandler<S3Event, String> {
         context.getLogger().log("Creating bucket " + outBucket);
         s3Client.createBucket(outBucket);
       }
-      
-      s3Client.putObject(outBucket, key, new ByteArrayInputStream(baos.toByteArray()), meta);
+
+      s3Client.putObject(outBucket, key, new ByteArrayInputStream(output), meta);
 
       context.getLogger().log("Successfully transformed " + inBucket + "/"
           + key + " to " + outBucket + "/" + key);
     }
     return "Ok";
+  }
+
+  private static String decodeKey(S3EventNotification.S3EventNotificationRecord record) {
+    try {
+      return URLDecoder.decode(record.getS3().getObject().getKey(), "UTF-8");
+    }
+    catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

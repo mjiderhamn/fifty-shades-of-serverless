@@ -15,16 +15,15 @@ public class QueueHandler implements RequestHandler<SQSEvent, Void> {
   static final String OUTPUT_QUEUE = "https://sqs.eu-central-1.amazonaws.com/047533455857/50shades-result";
 
   @Override
-  public Void handleRequest(SQSEvent event, Context context)
-  {
+  public Void handleRequest(SQSEvent event, Context context) {
     context.getLogger().log("About to process " + event.getRecords().size() + " record(s)");
     final AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient(); // NOTE! Can take longer than default timeout!
     for(SQSEvent.SQSMessage msg : event.getRecords()) {
-      final byte[] output = TransformationService.transform(msg.getBody().getBytes());
-      
+      final String output = TransformationService.transform(msg.getBody());
+
       // Send back result
-      // context.getLogger().log("Sending " + baos.toByteArray().length + " bytes to " + OUTPUT_QUEUE);
-      sqs.sendMessage(OUTPUT_QUEUE, new String(output));
+      // context.getLogger().log("Sending " + output.length() + " bytes to " + OUTPUT_QUEUE);
+      sqs.sendMessage(OUTPUT_QUEUE, output);
     }
     return null;
   }

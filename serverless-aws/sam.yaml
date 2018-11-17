@@ -12,7 +12,7 @@ Resources:
       MemorySize: 512
       Timeout: 15
       Events:
-        Ping:
+        Upload:
           Type: Api
           Properties:
             Path: /transform/{proxy+}

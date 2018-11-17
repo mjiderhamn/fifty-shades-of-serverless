@@ -13,10 +13,10 @@ public class AwsHandler implements RequestHandler<ApiGatewayRequest, ApiGatewayR
   @Override
   public ApiGatewayResponse handleRequest(ApiGatewayRequest request, Context context) {
     context.getLogger().log("Input: " + request.getBody());
-    final byte[] output = TransformationService.transform(request.getBody().getBytes());
-    return new ApiGatewayResponse.Builder()
+    final String output = TransformationService.transform(request.getBody());
+    return ApiGatewayResponse.builder()
         .setStatusCode(200)
-        .setRawBody(new String(output))
+        .setRawBody(output)
         .build();
   }
 }
