@@ -56,6 +56,23 @@ public class TransformationService {
       throw new RuntimeException(e);
     }
   }
+
+  /** Transform XML document from one format to another */
+  public static byte[] transform(InputStream input) {
+    try {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      getTransformer().transform(new StreamSource(input), new StreamResult(baos));
+      return baos.toByteArray();
+    }
+    catch (TransformerException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /** Transform XML document from one format to another */
+  public static String transform(String input) {
+    return new String(transform(input.getBytes()));
+  }
   
   /** Transform XML document from one format to another */
   public static byte[] transform(byte[] input) {
