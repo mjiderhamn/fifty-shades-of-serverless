@@ -14,6 +14,9 @@ public class AwsHandler implements RequestHandler<ApiGatewayRequest, ApiGatewayR
   public ApiGatewayResponse handleRequest(ApiGatewayRequest request, Context context) {
     context.getLogger().log("Input: " + request.getBody());
     final byte[] output = TransformationService.transform(request.getBody().getBytes());
-    return new ApiGatewayResponse(new String(output), null, 200, false);
+    return new ApiGatewayResponse.Builder()
+        .setStatusCode(200)
+        .setRawBody(new String(output))
+        .build();
   }
 }

@@ -16,6 +16,9 @@ public class PingHandler implements RequestHandler<ApiGatewayRequest, ApiGateway
   @Override
   public ApiGatewayResponse handleRequest(ApiGatewayRequest request, Context context) {
     context.getLogger().log("Handling input: " + request);
-    return new ApiGatewayResponse("Input: " + request.getBody(), null, 200, false);
+    return new ApiGatewayResponse.Builder()
+        .setStatusCode(200)
+        .setRawBody("Input: " + request.getBody())
+        .build();
   }
 }
