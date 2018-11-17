@@ -9,6 +9,8 @@ Resources:
       Handler: se.jiderhamn.serverless.aws.AwsHandler::handleRequest
       Runtime: java8
       CodeUri: ./target/lambda.jar
+      MemorySize: 512
+      Timeout: 15
       Events:
         Ping:
           Type: Api
@@ -22,6 +24,7 @@ Resources:
       CodeUri: ./target/lambda.jar
       Handler: se.jiderhamn.serverless.aws.PingHandler::handleRequest
       Runtime: java8
+      Timeout: 30 # Needed for initial boot
       Events:
         Ping:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
