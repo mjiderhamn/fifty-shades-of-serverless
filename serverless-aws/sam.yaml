@@ -46,7 +46,7 @@ Resources:
         ProcessS3ObjectEvent:
           Type: S3
           Properties:
-            Bucket: !Ref InBucket 
+            Bucket: !Ref InBucket # Must be declared in the same template
             Events: s3:ObjectCreated:*
   InBucket:
     Type: AWS::S3::Bucket
