@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.StreamingOutput;
 
+/** Jersey REST service implementation */
 @Path("/transform")
 public class TransformResource {
 
