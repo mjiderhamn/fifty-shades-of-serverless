@@ -19,6 +19,7 @@ import java.net.URLDecoder;
 /**
  * @author Mattias Jiderhamn
  */
+@SuppressWarnings("unused")
 public class S3Handler implements RequestHandler<S3Event, String> {
   @Override
   public String handleRequest(S3Event s3event, Context context) {
@@ -46,7 +47,7 @@ public class S3Handler implements RequestHandler<S3Event, String> {
 
       // Uploading to S3 destination bucket
       final String outBucket = inBucket + ".out";
-      if(! s3Client.doesBucketExist(outBucket)) {
+      if(! s3Client.doesBucketExistV2(outBucket)) {
         context.getLogger().log("Creating bucket " + outBucket);
         s3Client.createBucket(outBucket);
       }

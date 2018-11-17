@@ -76,6 +76,7 @@ public class ApiGatewayRequest {
     this.stageVariables = stageVariables;
   }
 
+  @SuppressWarnings("WeakerAccess")
   public String getBody() {
     return body;
   }

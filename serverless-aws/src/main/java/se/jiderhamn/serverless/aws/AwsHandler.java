@@ -7,6 +7,7 @@ import se.jiderhamn.serverless.TransformationService;
 /**
  * @author Mattias Jiderhamn
  */
+@SuppressWarnings("unused")
 public class AwsHandler implements RequestHandler<ApiGatewayRequest, ApiGatewayResponse> {
 
   @Override

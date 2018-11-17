@@ -1,4 +1,6 @@
-## Archetype
+# AWS Lambda examples
+
+## Maven archetype for generating new project
 ```
 mvn archetype:generate -DgroupId=se.jiderhamn.fifty-shades-of-serverless -DartifactId=serverless-aws-jersey -Dversion=1.0.0-SNAPSHOT -DarchetypeGroupId=com.amazonaws.serverless.archetypes -DarchetypeArtifactId=aws-serverless-jersey-archetype -DarchetypeVersion=1.1.3
 ```
@@ -8,7 +10,7 @@ mvn archetype:generate -DgroupId=se.jiderhamn.fifty-shades-of-serverless -Dartif
 ```
 aws configure
 aws s3 mb s3://fifty-shades --region eu-central-1
-sam package --template-file template.yaml --output-template-file serverless-output.yaml --s3-bucket fifty-shades
+sam package --template-file sam.yaml --output-template-file serverless-output.yaml --s3-bucket fifty-shades
 sam deploy --template-file serverless-output.yaml --stack-name fifty-shades-of-serverless --capabilities CAPABILITY_IAM
 
 # Should be same as 
