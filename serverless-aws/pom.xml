@@ -9,7 +9,16 @@
   <artifactId>serverless-aws</artifactId>
   <packaging>jar</packaging>
   <name>AWS Lambda demo</name>
-  
+
+  <properties>
+    <awsRegion>eu-central-1</awsRegion>
+    <s3Bucket>fifty-shades</s3Bucket>
+    <stackName>fifty-shades-of-serverless</stackName>
+    <s3Prefix>aws-serverless-java/${project.groupId}:${project.artifactId}:${project.version}</s3Prefix>
+    <skipLocalInvoke>true</skipLocalInvoke>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>se.jiderhamn.fifty-shades-of-serverless</groupId>
@@ -20,7 +29,6 @@
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-core</artifactId>
       <version>1.2.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -49,29 +57,25 @@
       <artifactId>jackson-databind</artifactId>
       <!-- https://github.com/aws/aws-sdk-java/issues/1159 -->
       <version>2.6.7.1</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- S3 -->
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-events</artifactId>
-      <version>2.2.2</version>
-      <scope>provided</scope>
+      <version>2.2.4</version>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-s3</artifactId>
-      <version>1.11.377</version>
-      <scope>provided</scope>
+      <version>1.11.451</version>
     </dependency>
     
     <!-- SQS -->
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sqs</artifactId>
-      <version>1.11.377</version>
-      <scope>provided</scope>
+      <version>1.11.451</version>
     </dependency>
 
     <dependency>
