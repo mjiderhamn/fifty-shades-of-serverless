@@ -1,32 +1,41 @@
 # AWS Lambda examples
 
 ## Maven archetype for generating new project
+See [here](https://github.com/awslabs/aws-serverless-java-archetype)
 ```
-mvn archetype:generate -DgroupId=se.jiderhamn.fifty-shades-of-serverless -DartifactId=serverless-aws-jersey -Dversion=1.0.0-SNAPSHOT -DarchetypeGroupId=com.amazonaws.serverless.archetypes -DarchetypeArtifactId=aws-serverless-jersey-archetype -DarchetypeVersion=1.1.3
+mvn archetype:generate -DarchetypeGroupId=com.amazonaws.serverless.archetypes -DarchetypeArtifactId=aws-serverless-java-archetype -DarchetypeVersion=1.0.0 -DarchetypeRepository=local
 ```
 
 ## Deploy
-
+Preparations
 ```
 aws configure
 aws s3 mb s3://fifty-shades --region eu-central-1
+```
+
+Using Maven
+```
+mvn deploy
+```
+
+Manually
+```
 sam package --template-file sam.yaml --output-template-file serverless-output.yaml --s3-bucket fifty-shades
 sam deploy --template-file serverless-output.yaml --stack-name fifty-shades-of-serverless --capabilities CAPABILITY_IAM
 
 # Should be same as 
 # aws cloudformation package --template-file template.yaml --output-template-file serverless-output.yaml --s3-bucket fifty-shades 
 # aws cloudformation deploy --template-file serverless-output.yaml --stack-name fifty-shades-of-serverless --capabilities CAPABILITY_IAM
-
 ```
 
-## Test
+## Ping
 ```
-curl --request POST -H "Content-Type: application/json" --data '{"name": "Foo"}'  https://bqv3qsahj0.execute-api.eu-central-1.amazonaws.com/Prod/ping/foo
+curl -s --request POST -H "Content-Type: application/json" --data '{"name": "Foo"}' https://8c1isxrana.execute-api.eu-central-1.amazonaws.com/Prod/ping/foo
 ```
 
-## Invoke
+## Transform
 ```
-curl -H "Content-Type: application/octet-stream" --data-binary @input.xml https://tz8k2kltb1.execute-api.eu-central-1.amazonaws.com/Prod/transform
+curl -s -H "Content-Type: application/octet-stream" --data-binary @input.xml  https://8c1isxrana.execute-api.eu-central-1.amazonaws.com/Prod/transform/a
 ```
 
 ## Create bucket for S3 tests

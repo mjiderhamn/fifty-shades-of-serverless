@@ -6,9 +6,9 @@ Resources:
   UploadFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Handler: se.jiderhamn.serverless.aws.AwsHandler::handler
+      Handler: se.jiderhamn.serverless.aws.AwsHandler::handleRequest
       Runtime: java8
-      CodeUri: target/serverless-aws-1.0.0-SNAPSHOT.jar
+      CodeUri: ./target/lambda.jar
       Events:
         Ping:
           Type: Api
@@ -19,7 +19,7 @@ Resources:
   PingFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: target/serverless-aws-1.0.0-SNAPSHOT.jar
+      CodeUri: ./target/lambda.jar
       Handler: se.jiderhamn.serverless.aws.PingHandler::handleRequest
       Runtime: java8
       Events:
@@ -34,7 +34,7 @@ Resources:
     Properties:
       Handler: se.jiderhamn.serverless.aws.S3Handler::handleRequest
       Runtime: java8
-      CodeUri: target/serverless-aws-1.0.0-SNAPSHOT.jar
+      CodeUri: ./target/lambda.jar
       MemorySize: 512
       Timeout: 15
       Policies:
@@ -55,7 +55,7 @@ Resources:
     Properties:      
       Handler: se.jiderhamn.serverless.aws.QueueHandler::handleRequest
       Runtime: java8
-      CodeUri: target/serverless-aws-1.0.0-SNAPSHOT.jar
+      CodeUri: ./target/lambda.jar
       MemorySize: 512
       Timeout: 15
       Policies:
