@@ -19,22 +19,22 @@ mvn azure-functions:deploy
 ### Ping
 Locally:
 ```
-curl http://localhost:7071/api/ping?name=foo
+curl -s http://localhost:7071/api/ping?name=foo
 ```
 
 Remotely:
 ```
-curl https://50shadesofserverless.azurewebsites.net/api/ping?name=foo
+curl -s https://50shadesofserverless.azurewebsites.net/api/ping?name=foo
 ```
 
 ### Transform
 Locally:
 ```
-curl --header "Content-Type: application/octet-stream" --data-binary @input.xml http://localhost:7071/api/transform
+curl -s --header "Content-Type: application/octet-stream" --data-binary @input.xml http://localhost:7071/api/transform
 ```
 Remotely:
 ```
-curl --header "Content-Type: application/octet-stream" --data-binary @input.xml https://50shadesofserverless.azurewebsites.net/api/transform
+curl -s --header "Content-Type: application/octet-stream" --data-binary @input.xml https://50shadesofserverless.azurewebsites.net/api/transform
 ```
 
 NOTE! For `byte[]` parameters, `--header "Content-Type: application/octet-stream"` us crucial.
