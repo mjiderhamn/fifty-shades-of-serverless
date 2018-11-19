@@ -21,7 +21,7 @@
  		<functionAppName>fiftyshades-spring</functionAppName>
 		<functionAppRegion>northeurope</functionAppRegion>
 		<functionResourceGroup>50shadesofserverless-rg</functionResourceGroup>
- 		<start-class>se.jiderhamn.serverless.spring.azure.Config</start-class>
+ 		<start-class>se.jiderhamn.serverless.spring.azure.SpringCloudFunctionAzureApplication</start-class>
  	</properties>
 	
 	<dependencyManagement>
